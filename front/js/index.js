@@ -17,7 +17,7 @@ async function fillProducts() {
                 // Insertion de l'élément "a"
                 let productLink = document.createElement("a");
                 document.querySelector(".items").appendChild(productLink);
-                productLink.href = `product.html`;
+                productLink.href = `product.html?id=${data[article]._id}`;
 
                 // Insertion de l'élément "article"
                 let productArticle = document.createElement("article");
@@ -42,7 +42,10 @@ async function fillProducts() {
                 productDescription.innerHTML = data[article].description;
             }
         })
-        .catch(function(error) {
-            return error;
-        });
+
+    // gestion erreur page d'acceuil
+    .catch(function(error) {
+        console.log("une erreur est survenue lors du chargement de la page");
+        return error;
+    });
 }
