@@ -2,6 +2,7 @@ let urlId = new URL(window.location.href);
 let productId = urlId.searchParams.get("id");
 
 
+
 const productsUrl = "http://localhost:3000/api/products/";
 
 async function getArticle(productId) {
@@ -21,5 +22,17 @@ async function displayArticle(productId) {
     productImg.src = article.imageUrl;
     productImg.alt = article.altTxt;
 
+    const productTitle = document.getElementById("title");
+    productTitle.innerHTML = article.name;
+
+    const productPrice = document.getElementById("price");
+    productPrice.innerHTML = article.price;
+
+    const productDescription = document.getElementById("description");
+    productDescription.innerHTML = article.description;
+
+
 }
+
+
 displayArticle(productId);
