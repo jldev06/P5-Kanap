@@ -32,6 +32,12 @@ async function displayArticle(productId) {
     productDescription.innerHTML = article.description;
 
 
+    for (color of article.colors) {
+        const productColors = document.createElement("option");
+        document.querySelector("#colors").appendChild(productColors);
+        productColors.value = color;
+        productColors.innerHTML = color;
+    }
 }
 
 
