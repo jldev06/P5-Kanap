@@ -86,7 +86,7 @@ function addToCart() {
                     "userProducts",
                     JSON.stringify(productLocalStorage)
                 );
-                alert("C'est cool, le produit est enregistré");
+                alert("le produit sélectionné est enregistré");
             } else {
                 // Comportement si il existe des données dans le localStorage
 
