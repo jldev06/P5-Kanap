@@ -46,6 +46,7 @@ async function displayArticle(productId) {
 displayArticle(productId);
 
 // Ajout des données au panier
+
 function addToCart() {
 
 
@@ -77,7 +78,7 @@ function addToCart() {
                 localStorage.getItem("userProducts")
             );
 
-            // Comportement si il n'y a pas de localStorage (il n'a ni valeur ni type défini : donc null)
+            // Comportement si il n'y a pas de données de produit sélectionné  dans le  localStorage 
 
             if (productLocalStorage == null) {
                 productLocalStorage = [];
@@ -88,20 +89,18 @@ function addToCart() {
                 );
                 alert("le produit sélectionné est enregistré");
             } else {
-                // Comportement si il existe des données dans le localStorage
+                // Comportement si il existe des données de produit sélectionné  dans le localStorage
 
                 // Condition si le produit comporte le même Id et la même couleur. Méthode find dans le localStorage et comparaison avec les valeurs de l'objet userProductArray
 
                 let mappingProducts = productLocalStorage.find(
-                    (el) =>
-                    el.userProductId === userProductId &&
-                    el.userProductColor === userProductColor
+                    (element) =>
+                    element.userProductId === userProductId &&
+                    element.userProductColor === userProductColor
                 );
 
-                // Si la condition est vraie on additionne la quantité de l'objet du localStorage qui répond à la condition avec celle de la page en cours et on renvoie le tout au localStorage
-
+                // Si la condition est vraie on incrémente la quantité
                 if (mappingProducts) {
-                    // On incrémente la quantité
 
                     newQty =
                         parseInt(mappingProducts.userProductQty) + parseInt(userProductQty);
