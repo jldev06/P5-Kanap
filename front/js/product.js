@@ -87,11 +87,12 @@ function addToCart() {
                     "userProducts",
                     JSON.stringify(productLocalStorage)
                 );
-                alert("le produit sélectionné est enregistré");
+                alert("le produit sélectionné est enregistré dans le panier");
             } else {
-                // Comportement si il existe des données de produit sélectionné  dans le localStorage
-
-                // Condition si le produit comporte le même Id et la même couleur. Méthode find dans le localStorage et comparaison avec les valeurs de l'objet userProductArray
+                /* étude duComportement si il existe des données de produit sélectionné  
+                 dans le localStorage en passant par la méthode map  avec Condition :
+                 si le produit comporte le même Id et la même couleur en passant par 
+                 la méthode find pour savoir si le produit est déjà dans le panier*/
 
                 let mappingProducts = productLocalStorage.find(
                     (element) =>
@@ -99,20 +100,20 @@ function addToCart() {
                     element.userProductColor === userProductColor
                 );
 
-                // Si la condition est vraie on incrémente la quantité
+                // Si la condition est vraie on incrémente la quantité 
                 if (mappingProducts) {
 
                     newQty =
                         parseInt(mappingProducts.userProductQty) + parseInt(userProductQty);
                     mappingProducts.userProductQty = newQty;
 
-                    // On l'enregistre dans le localStorage json stringify prend l'objet et le transforme en chaîne de caractére
+                    // On l'enregistre dans le localStorage, la méthode json stringify prend l'objet et le transforme en chaîne de caractére
 
                     localStorage.setItem(
                         "userProducts",
                         JSON.stringify(productLocalStorage)
                     );
-                    alert("le produit sélectionné est enregistré");
+                    alert("le produit sélectionné est enregistré dans le panier");
                 } else {
                     // Dans tous les autres cas, on enregistre un nouvel objet dans le localStorage
 
@@ -121,7 +122,7 @@ function addToCart() {
                         "userProducts",
                         JSON.stringify(productLocalStorage)
                     );
-                    alert(" le produit sélectionné est enregistré");
+                    alert(" le produit sélectionné est enregistré dans le panier");
                 }
             }
 

@@ -1,22 +1,22 @@
 // Gestion du panier
 
 
-// Mise à disposition des éléments à appeler pour la boucle d'affichage des produits sélectionnés
+// déclaration des éléments à appeler pour la boucle d'affichage des produits sélectionnés
 
 const LOCALSTORAGE = JSON.parse(localStorage.getItem("userProducts"));
 const PRODUCTS_URL = "http://localhost:3000/api/products/";
 
-// Identification des balises d'affichage
+// Identification des balises d'affichage concernées
 
 const displayCard = document.getElementById("cart__items");
 const displayQty = document.getElementsByClassName("itemQuantity");
 
-// déclaration des variables à utiliser - fonction displayTotal
+// déclaration des variables à utiliser pour la fonction displayTotal
 
 let sumPrice = [];
 let totalQuantity = [];
 
-// Appel de l'API pour rendre disponible la liste des produits
+// Appel de l'API pour disposer de la liste des produits
 
 async function getArticle(productID) {
     const catchArticles = await fetch(PRODUCTS_URL + productID)
