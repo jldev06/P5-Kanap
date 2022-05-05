@@ -199,10 +199,10 @@ function displayTotal(sumPrice, totalQuantity) {
     totalQuantitySpan.textContent = totalQuantity;
 }
 
-// Changement des totaux
+// gestion du changement des totaux 
 
 function changeTotal() {
-    //gestion des entrées de données pour la quantité
+    //gestion des entrées de données pour la quantité en passant par la méthode closest
 
     const inputQuantity = document.querySelectorAll(".itemQuantity");
 
@@ -213,7 +213,8 @@ function changeTotal() {
             "#cart__items > article > div.cart__item__content > div > p.cart__item__content__description__price"
         );
 
-        // gestion des autres entrées de données
+        /* gestion des autres entrées de données en utilisant addEventListener de type
+        change et en passant par la méthode dataset*/
 
         self.addEventListener("change", async function() {
             let changingProductid = target.dataset.id;
