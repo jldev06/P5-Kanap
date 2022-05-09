@@ -161,10 +161,8 @@ async function displayBasket() {
         const productCardEmpty = document.createElement("p");
         displayCard.appendChild(productCardEmpty);
         productCardEmpty.textContent = "Votre panier est vide";
-
         const totalPriceSpan = document.getElementById("totalPrice");
         totalPriceSpan.textContent = 0;
-
         const totalQuantitySpan = document.getElementById("totalQuantity");
         totalQuantitySpan.textContent = 0;
     }
@@ -173,14 +171,12 @@ async function displayBasket() {
 }
 displayBasket();
 
-// Stockage du prix de chaque produit en fonction de sa quantités et stockage de la quantité
+// calcul et Stockage du prix de chaque produit en fonction de sa quantités et stockage de la quantité
 
 function evalTotal(Qty, Price) {
     let totalPrice = Qty * Price;
     sumPrice.push(totalPrice);
-
     totalQuantity.push(Number(Qty));
-
     displayTotal(sumPrice, totalQuantity);
 }
 
@@ -220,9 +216,9 @@ function changeTotal() {
             let changingProductid = target.dataset.id;
             let changingProductColor = target.dataset.color;
             let newQty = self.value;
+            sumPrice = [], totalQuantity = [];
 
             for (product of LOCALSTORAGE) {
-                const article = await getArticle(product.userProductId);
                 if (
                     changingProductid === product.userProductId &&
                     changingProductColor === product.userProductColor
@@ -230,30 +226,14 @@ function changeTotal() {
                     product.userProductQty = newQty;
                     if (newQty != 0) {
                         localStorage.setItem("userProducts", JSON.stringify(LOCALSTORAGE));
-
                         let sumArray = [];
                         let sumProduct = 0;
-
                         let qtyArray = [];
-
                         for (product of LOCALSTORAGE) {
-                            sumProduct = article.price * product.userProductQty;
-                            sumArray.push(sumProduct);
-                            qtyArray.push(Number(product.userProductQty));
+                            const article = await getArticle(product.userProductId);
+                            console.log(product.userProductQty, article.price)
+                            evalTotal(product.userProductQty, article.price)
                         }
-
-                        //utilisation de la méthode reduce et affichage sur la page panier du resultat
-
-                        sumArray = sumArray.reduce((a, b) => a + b);
-                        qtyArray = qtyArray.reduce((a, b) => a + b);
-
-                        const totalPriceSpan = document.getElementById("totalPrice");
-                        totalPriceSpan.dataset.price = sumArray;
-                        totalPriceSpan.textContent = sumArray;
-
-                        const totalQuantitySpan = document.getElementById("totalQuantity");
-                        totalQuantitySpan.dataset.qty = qtyArray;
-                        totalQuantitySpan.textContent = qtyArray;
                     } else if (newQty == 0) {
                         LOCALSTORAGE.splice(LOCALSTORAGE.indexOf(product), 1)
                         localStorage.setItem("userProducts", JSON.stringify(LOCALSTORAGE))
@@ -267,7 +247,7 @@ function changeTotal() {
     }
 };
 
-// Suppression dans le panier d'un produit sélectionné 
+// gestion de la suppression dans le panier d'un produit sélectionné 
 
 function removeItems() {
     const deleteProduct = document.querySelectorAll(".deleteItem");
