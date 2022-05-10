@@ -1,3 +1,5 @@
+// Gestion de la page d'acceuil 
+
 fillProducts();
 
 // Récupération des articles de l'API

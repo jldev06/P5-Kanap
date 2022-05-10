@@ -371,3 +371,64 @@ function getForm() {
     };
 }
 getForm();
+
+// Passage de la commande
+
+function postForm() {
+    const orderBtn = document.getElementById("order");
+
+    //Ecoute du bouton commander
+
+    orderBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        if (LOCALSTORAGE !== null) {
+            //Tableau de produits envoyé au local storage
+            let orderProducts = [];
+            for (let i = 0; i < LOCALSTORAGE.length; i++) {
+                orderProducts.push(LOCALSTORAGE[i].userProductId);
+            }
+
+
+            if (firstName && lastName && address && city && email) {
+                const orderUserProduct = {
+                    //objet contact avec les données du formulaire  
+                    contact: {
+                        firstName: firstName,
+                        lastName: lastName,
+                        address: address,
+                        city: city,
+                        email: email,
+                    },
+                    products: orderProducts,
+
+                };
+
+                // Requête POST dans l'API et récupération de l'identifiant de commande dans la réponse
+
+                const options = {
+                    method: "POST",
+                    body: JSON.stringify(orderUserProduct),
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                };
+                fetch("http://localhost:3000/api/products/order", options)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        // Redirection de lutilisateur sur la page confirmation avec l'identifiant de commande dans l'url
+                        document.location.href = "confirmation.html?id=" + data.orderId;
+                    })
+                    .catch(function(err) {
+                        console.log("Erreur fetch" + err);
+                    });
+            } else {
+                alert("Veuillez renseigner le formulaire");
+            }
+        } else {
+            alert("Votre Panier est vide");
+        }
+    });
+}
+postForm();
