@@ -16,6 +16,7 @@ const displayQty = document.getElementsByClassName("itemQuantity");
 let sumPrice = [];
 let totalQuantity = [];
 
+
 // Appel de l'API pour disposer de la liste des produits
 
 async function getArticle(productID) {
@@ -280,3 +281,93 @@ function removeItems() {
 }
 
 // gestion du formulaire
+function getForm() {
+    // Ajout des Regex
+    let form = document.querySelector(".cart__order__form");
+
+    //Création des expressions régulières
+    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    let nameRegExp = new RegExp("^[a-zA-Z ,éè'-]+$");
+    let addressRegExp = new RegExp("^[0-9]{1,4}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+
+    // Ecoute de la modification du prénom
+    form.firstName.addEventListener('change', function() {
+        validFirstName(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.lastName.addEventListener('change', function() {
+        validLastName(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.address.addEventListener('change', function() {
+        validAddress(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.city.addEventListener('change', function() {
+        validCity(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.email.addEventListener('change', function() {
+        validEmail(this);
+    });
+
+    //validation du prénom
+    const validFirstName = function(inputFirstName) {
+        let firstNameErrorMsg = inputFirstName.nextElementSibling;
+
+        if (nameRegExp.test(inputFirstName.value)) {
+            firstNameErrorMsg.innerHTML = '';
+        } else {
+            firstNameErrorMsg.innerHTML = 'Veuillez saisir votre prénom; exemple: jean';
+        }
+    };
+
+    //validation du nom
+    const validLastName = function(inputLastName) {
+        let lastNameErrorMsg = inputLastName.nextElementSibling;
+
+        if (nameRegExp.test(inputLastName.value)) {
+            lastNameErrorMsg.innerHTML = '';
+        } else {
+            lastNameErrorMsg.innerHTML = 'Veuillez saisir votre nom de famille; exemple Dupont';
+        }
+    };
+
+    //validation de l'adresse
+    const validAddress = function(inputAddress) {
+        let addressErrorMsg = inputAddress.nextElementSibling;
+
+        if (addressRegExp.test(inputAddress.value)) {
+            addressErrorMsg.innerHTML = '';
+        } else {
+            addressErrorMsg.innerHTML = 'Veuillez saisir une adresse valide avec un numéro, une voie et le  nom de la voie; exemple : 124 rue durand ';
+        }
+    };
+
+    //validation de la ville
+    const validCity = function(inputCity) {
+        let cityErrorMsg = inputCity.nextElementSibling;
+
+        if (nameRegExp.test(inputCity.value)) {
+            cityErrorMsg.innerHTML = '';
+        } else {
+            cityErrorMsg.innerHTML = 'Veuillez saisir le nom de votre ville; exemple Paris';
+        }
+    };
+
+    //validation de l'email
+    const validEmail = function(inputEmail) {
+        let emailErrorMsg = inputEmail.nextElementSibling;
+
+        if (emailRegExp.test(inputEmail.value)) {
+            emailErrorMsg.innerHTML = '';
+        } else {
+            emailErrorMsg.innerHTML = 'Veuillez saisir une adresse mail valide, exemple dupontjean@gmail.com';
+        }
+    };
+}
+getForm();
