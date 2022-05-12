@@ -283,7 +283,7 @@ function removeItems() {
 // gestion du formulaire
 function getForm() {
     // Ajout des Regex
-    let form = document.querySelector(".cart__order__form");
+    let form = document.querySelector(".cart__order__form")
 
     //Création des expressions régulières
     let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
@@ -345,6 +345,7 @@ function getForm() {
             addressErrorMsg.innerHTML = '';
         } else {
             addressErrorMsg.innerHTML = 'Veuillez saisir une adresse valide avec un numéro, une voie et le  nom de la voie; exemple : 124 rue durand ';
+
         }
     };
 
@@ -372,15 +373,21 @@ function getForm() {
 }
 getForm();
 
-// Passage de la commande
+// Passage de la commande fonction post form
 
 function postForm() {
     const orderBtn = document.getElementById("order");
 
     //Ecoute du bouton commander
-
     orderBtn.addEventListener("click", (event) => {
         event.preventDefault();
+
+        let form = document.querySelector(".cart__order__form")
+        let firstName = form.firstName.value;
+        let lastName = form.lastName.value;
+        let address = form.address.value;
+        let city = form.city.value;
+        let email = form.email.value;
 
         if (LOCALSTORAGE !== null) {
             //Tableau de produits envoyé au local storage
@@ -417,18 +424,21 @@ function postForm() {
                 fetch("http://localhost:3000/api/products/order", options)
                     .then((res) => res.json())
                     .then((data) => {
-                        // Redirection de lutilisateur sur la page confirmation avec l'identifiant de commande dans l'url
+                        // Redirection de l'utilisateur sur la page confirmation avec l'identifiant de commande dans l'url
                         document.location.href = "confirmation.html?id=" + data.orderId;
                     })
                     .catch(function(err) {
                         console.log("Erreur fetch" + err);
                     });
             } else {
-                alert("Veuillez renseigner le formulaire");
+                alert("Veuillez renseigner correctement le formulaire");
             }
         } else {
             alert("Votre Panier est vide");
         }
     });
 }
+
+
+
 postForm();
