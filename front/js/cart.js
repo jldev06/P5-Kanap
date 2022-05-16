@@ -11,11 +11,12 @@ const PRODUCTS_URL = "http://localhost:3000/api/products/";
 const displayCard = document.getElementById("cart__items");
 const displayQty = document.getElementsByClassName("itemQuantity");
 
-// déclaration des variables à utiliser pour la fonction displayTotal
+// déclaration des variables à utiliser pour la fonction displayTotal et le formulaire
 
 let sumPrice = [];
 let totalQuantity = [];
-
+let firstName, lastName, address, city, email;
+let article;
 
 // Appel de l'API pour disposer de la liste des produits
 
@@ -281,125 +282,124 @@ function removeItems() {
 }
 
 // gestion du formulaire
-function getForm() {
-    // Ajout des Regex
-    let form = document.querySelector(".cart__order__form")
+function getUserForm() {
+    let inputs = document.querySelectorAll("input");
 
-    //Création des expressions régulières
-    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
-    let nameRegExp = new RegExp("^[a-zA-Z ,éè'-]+$");
-    let addressRegExp = new RegExp("^[0-9]{1,4}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+    // Gestion des erreurs
 
-    // Ecoute de la modification du prénom
-    form.firstName.addEventListener('change', function() {
-        validFirstName(this);
-    });
-
-    // Ecoute de la modification du prénom
-    form.lastName.addEventListener('change', function() {
-        validLastName(this);
-    });
-
-    // Ecoute de la modification du prénom
-    form.address.addEventListener('change', function() {
-        validAddress(this);
-    });
-
-    // Ecoute de la modification du prénom
-    form.city.addEventListener('change', function() {
-        validCity(this);
-    });
-
-    // Ecoute de la modification du prénom
-    form.email.addEventListener('change', function() {
-        validEmail(this);
-    });
-
-    //validation du prénom
-    const validFirstName = function(inputFirstName) {
-        let firstNameErrorMsg = inputFirstName.nextElementSibling;
-
-        if (nameRegExp.test(inputFirstName.value)) {
-            firstNameErrorMsg.innerHTML = '';
+    const errorDisplay = (tag, message, valid) => {
+        const displayErrorMessage = document.querySelector("#" + tag + "ErrorMsg");
+        if (!valid) {
+            displayErrorMessage.textContent = message;
         } else {
-            firstNameErrorMsg.innerHTML = 'Veuillez saisir votre prénom; exemple: jean';
+            displayErrorMessage.textContent = "";
         }
     };
 
-    //validation du nom
-    const validLastName = function(inputLastName) {
-        let lastNameErrorMsg = inputLastName.nextElementSibling;
+    // Validation des champs via comparaison Regex
 
-        if (nameRegExp.test(inputLastName.value)) {
-            lastNameErrorMsg.innerHTML = '';
+    const firstNameChecker = (value) => {
+        if (!value.match(/^[a-zA-Z ,éè'-]+$/)) {
+            errorDisplay("firstName", "Veuillez saisir correctement votre prénom; exemple: jean");
+            firstName = false;
         } else {
-            lastNameErrorMsg.innerHTML = 'Veuillez saisir votre nom de famille; exemple Dupont';
+            errorDisplay("lastName", "", true);
+            firstName = value;
         }
     };
 
-    //validation de l'adresse
-    const validAddress = function(inputAddress) {
-        let addressErrorMsg = inputAddress.nextElementSibling;
-
-        if (addressRegExp.test(inputAddress.value)) {
-            addressErrorMsg.innerHTML = '';
+    const lastNameChecker = (value) => {
+        if (!value.match(/^[a-zA-Z ,éè'-]+$/)) {
+            errorDisplay("lastName", "Veuillez saisir correctement votre nom de famille; exemple Dupont");
+            lastName = false;
         } else {
-            addressErrorMsg.innerHTML = 'Veuillez saisir une adresse valide avec un numéro, une voie et le  nom de la voie; exemple : 124 rue durand ';
-
+            errorDisplay("lastName", "", true);
+            lastName = value;
         }
     };
 
-    //validation de la ville
-    const validCity = function(inputCity) {
-        let cityErrorMsg = inputCity.nextElementSibling;
-
-        if (nameRegExp.test(inputCity.value)) {
-            cityErrorMsg.innerHTML = '';
+    const addressChecker = (value) => {
+        if (!value.match(/^[0-9]{1,4}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+$/)) {
+            errorDisplay("address", "Veuillez saisir une adresse valide avec un numéro, une voie et le  nom de la voie; exemple : 124 rue durand");
+            address = false;
         } else {
-            cityErrorMsg.innerHTML = 'Veuillez saisir le nom de votre ville; exemple Paris';
+            errorDisplay("address", "", true);
+            address = value;
         }
     };
 
-    //validation de l'email
-    const validEmail = function(inputEmail) {
-        let emailErrorMsg = inputEmail.nextElementSibling;
-
-        if (emailRegExp.test(inputEmail.value)) {
-            emailErrorMsg.innerHTML = '';
+    const cityChecker = (value) => {
+        if (!value.match(/^[a-zA-Z ,éè'-]+$/)) {
+            errorDisplay("city", "Veuillez saisir correctement le nom de votre ville; exemple Paris");
+            city = false;
         } else {
-            emailErrorMsg.innerHTML = 'Veuillez saisir une adresse mail valide, exemple dupontjean@gmail.com';
+            errorDisplay("city", "", true);
+            city = value;
         }
     };
+
+    const emailChecker = (value) => {
+        if (!value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)) {
+            errorDisplay("email", "Veuillez saisir une adresse mail valide, exemple dupontjean@gmail.com");
+            email = false;
+        } else {
+            errorDisplay("email", "", true);
+            email = value;
+        }
+    };
+
+    // Ecoute des champs du formulaire
+
+    inputs.forEach((input) => {
+        input.addEventListener("input", (e) => {
+            switch (e.target.id) {
+                case "firstName":
+                    firstNameChecker(e.target.value);
+
+                    break;
+                case "lastName":
+                    lastNameChecker(e.target.value);
+
+                    break;
+                case "address":
+                    addressChecker(e.target.value);
+
+
+                    break;
+                case "city":
+                    cityChecker(e.target.value);
+
+
+                    break;
+                case "email":
+                    emailChecker(e.target.value);
+
+            }
+        });
+    });
 }
-getForm();
+getUserForm();
 
-// Passage de la commande fonction post form
+// Envoi d'une requête POST à l'API
 
 function postForm() {
     const orderBtn = document.getElementById("order");
 
-    //Ecoute du bouton commander
+    //Ecouter le bouton submit
+
     orderBtn.addEventListener("click", (event) => {
         event.preventDefault();
 
-        let form = document.querySelector(".cart__order__form")
-        let firstName = form.firstName.value;
-        let lastName = form.lastName.value;
-        let address = form.address.value;
-        let city = form.city.value;
-        let email = form.email.value;
-
         if (LOCALSTORAGE !== null) {
-            //Tableau de produits envoyé au local storage
             let orderProducts = [];
             for (let i = 0; i < LOCALSTORAGE.length; i++) {
                 orderProducts.push(LOCALSTORAGE[i].userProductId);
             }
 
+            // Construction de l'objet attendu par l'API
 
             if (firstName && lastName && address && city && email) {
                 const orderUserProduct = {
-                    //objet contact avec les données du formulaire  
                     contact: {
                         firstName: firstName,
                         lastName: lastName,
@@ -408,10 +408,9 @@ function postForm() {
                         email: email,
                     },
                     products: orderProducts,
-
                 };
 
-                // Requête POST dans l'API et récupération de l'identifiant de commande dans la réponse
+                // Requête POST
 
                 const options = {
                     method: "POST",
@@ -424,7 +423,7 @@ function postForm() {
                 fetch("http://localhost:3000/api/products/order", options)
                     .then((res) => res.json())
                     .then((data) => {
-                        // Redirection de l'utilisateur sur la page confirmation avec l'identifiant de commande dans l'url
+                        // Renvoi de l'orderID dans l'URL
                         document.location.href = "confirmation.html?id=" + data.orderId;
                     })
                     .catch(function(err) {
@@ -438,7 +437,4 @@ function postForm() {
         }
     });
 }
-
-
-
 postForm();
